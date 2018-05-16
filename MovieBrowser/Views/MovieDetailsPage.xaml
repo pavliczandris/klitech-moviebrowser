@@ -1,0 +1,105 @@
+﻿<Page
+    x:Class="MovieBrowser.Views.MovieDetailsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MovieBrowser.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    xmlns:vm="using:MovieBrowser.ViewModels"
+    xmlns:c="using:Template10.Controls">
+
+    <Page.DataContext>
+        <vm:MovieDetailsPageViewModel x:Name="ViewModel"/>
+    </Page.DataContext>
+
+    <Page.Resources>
+        <CollectionViewSource x:Key="CastViewSource"
+                              IsSourceGrouped="False"
+                              Source="{Binding CastList}"/>
+    </Page.Resources>
+
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Padding="10">
+
+            <c:PageHeader Content="{Binding Movie.title}" />
+
+            <Grid>
+                <Grid.Background>
+                    <ImageBrush ImageSource="{Binding Movie.BackdropUri}" Stretch="UniformToFill" Opacity="0.1" />
+                </Grid.Background>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="0" Grid.RowSpan="6"
+                           Source="{Binding Movie.PosterUri}"
+                           Stretch="Uniform" VerticalAlignment="Top"/>
+
+                <StackPanel Grid.Column="1">
+                    <StackPanel Margin="30, 0, 30, 30">
+                        <TextBlock Text="Overview" FontSize="20" FontWeight="Bold" Margin="0, 5, 0, 10"/>
+                        <TextBlock Text="{Binding Movie.Overview}" TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="30, 10, 30, 0">
+                        <TextBlock Text="User Score" FontSize="15" FontWeight="Bold" Margin="0, 5, 0, 0"/>
+                        <TextBlock>
+                            <Run Text="{Binding Movie.vote_average}"/>
+                            <Run Text="/ 10"/>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Margin="30, 10, 30, 0">
+                        <TextBlock Text="Release Date" FontSize="15" FontWeight="Bold" Margin="0, 5, 0, 0"/>
+                        <TextBlock Text="{Binding Movie.release_date}"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="30, 10, 30, 0">
+                        <TextBlock Text="Runtime" FontSize="15" FontWeight="Bold" Margin="0, 5, 0, 0"/>
+                        <TextBlock>
+                            <Run Text="{Binding Movie.runtime}"/>
+                            <Run Text=" minutes"/>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Margin="30, 10, 30, 0">
+                        <TextBlock Text="Genres" FontSize="15" FontWeight="Bold" Margin="0, 5, 0, 0"/>
+                        <TextBlock Text="{Binding Movie.GenreNames}"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="30, 10, 30, 0">
+                        <TextBlock Text="Production Companies" FontSize="15" FontWeight="Bold" Margin="0, 5, 0, 0"/>
+                        <TextBlock Text="{Binding Movie.ProductionCompanyNames}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <TextBlock Margin="15, 0, 0, 0" Text="{Binding Movie.tagline}" FontSize="20" FontStyle="Italic"/>
+
+            <TextBlock Margin="10, 40, 0, 0" Text="Cast" FontSize="20" FontWeight="Bold"/>
+
+            <ListView ItemsSource="{Binding Source={StaticResource CastViewSource}}"
+                      IsItemClickEnabled="True"
+                      ItemClick="Person_ItemClick"
+                      MaxHeight="300"
+                      Margin="0, 0, 50, 20">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <Run Text="{Binding name}"/>
+                            <Run Text="-"/>
+                            <Run Text="{Binding character}"/>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </StackPanel>
+    </ScrollViewer>
+
+
+</Page>

@@ -9,21 +9,97 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:MovieBrowser.ViewModels" mc:Ignorable="d">
 
+    <Page.Resources>
+        <CollectionViewSource x:Key="PopularMoviesViewSource"
+                              IsSourceGrouped="False"
+                              Source="{Binding PopularMovies}"/>
+        <CollectionViewSource x:Key="PopularTvShowsViewSource"
+                              IsSourceGrouped="False"
+                              Source="{Binding PopularTvShows}"/>
+    </Page.Resources>
+
     <Page.DataContext>
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
-    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+          Margin="10">
 
-        <controls:PageHeader x:Name="pageHeader" Content="Main Page"
-                             RelativePanel.AlignLeftWithPanel="True"
-                             RelativePanel.AlignRightWithPanel="True"
-                             RelativePanel.AlignTopWithPanel="True" />
+            <controls:PageHeader FontSize="20sp" Content="Movie Browser - Home Page" Margin="15, 0"/>
 
-        <TextBlock x:Name="mainTextBlock" Margin="16,12,0,0"
-                   RelativePanel.AlignLeftWithPanel="True"
-                   RelativePanel.Below="pageHeader" Text="Hello World" />
+            <Grid Margin="15, 5">
+                <Grid.ColumnDefinitions> 
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-    </RelativePanel>
+                <TextBox Grid.Column="0" PlaceholderText="Search" x:Name="SearchTextBox"/>
+                <Button Grid.Column="1" Content="Search" Click="SearchButton_Click"/>
+            </Grid>
+
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Popular Movies" Margin="10, 20, 0, 0" FontSize="25" FontWeight="SemiBold"/>
+                <GridView Grid.Row="1" Grid.Column="0"
+                  Padding="10"
+                  ItemsSource="{Binding Source={StaticResource PopularMoviesViewSource}}"
+                  IsItemClickEnabled="True"
+                  ItemClick="Movie_ItemClick">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="300" Height="350">
+                                <Image Source="{Binding PosterUri}" Stretch="UniformToFill" VerticalAlignment="Center" />
+                                <Border VerticalAlignment="Bottom">
+                                    <Border.Background>
+                                        <LinearGradientBrush EndPoint="0, 0" StartPoint="1, 1">
+                                            <GradientStop Color="#FF2B2B2B" Offset="0.1"/>
+                                            <GradientStop Color="#FF6E6E6E" Offset="0.9"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <TextBlock Text="{Binding title}" Margin="12" Foreground="White" FontWeight="SemiBold"/>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="Popular TV Shows" Margin="10, 20, 0, 0" FontSize="25" FontWeight="SemiBold"/>
+                <GridView Grid.Row="1" Grid.Column="1"
+                  Padding="10"
+                  ItemsSource="{Binding Source={StaticResource PopularTvShowsViewSource}}"
+                  IsItemClickEnabled="True"
+                  ItemClick="TvShow_ItemClick">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="300" Height="350">
+                                <Image Source="{Binding PosterUri}" Stretch="UniformToFill" VerticalAlignment="Center" />
+                                <Border VerticalAlignment="Bottom">
+                                    <Border.Background>
+                                        <LinearGradientBrush EndPoint="0, 0" StartPoint="1, 1">
+                                            <GradientStop Color="#FF2B2B2B" Offset="0.1"/>
+                                            <GradientStop Color="#FF6E6E6E" Offset="0.9"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <TextBlock Text="{Binding name}" Margin="12" Foreground="White" FontWeight="SemiBold"/>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+
 
 </Page>
